@@ -4,13 +4,14 @@ scriptDetailsUrl = ""
 
 centerPitch = 0
 centerYaw = 0
-PITCHSPACE = .4
+PITCHSPACE = .7
 YAWSPACE = .5
-MELEEMINSPEED = 400
+MELEEMINSPEED = 300
 
 BUTTONPUSHED = false
 BUTTONMIDDLE = false
 BUTTONRIGHT = false
+MELEETRUE = false
 
 function onPoseEdge(pose, edge)
 	--myo.debug("onPoseEdge: " .. pose .. ": " .. edge)
@@ -111,6 +112,7 @@ function aimDownSights()
 		myo.mouse("center", "down")
 		myo.mouse("center", "up")
 		BUTTONMIDDLE = true;
+		myo.debug("aim down")
 	end
 end
 
@@ -119,6 +121,7 @@ function hipFire()
 		myo.mouse("center", "down")
 		myo.mouse("center", "up")
 		BUTTONMIDDLE=false
+		myo.debug("hipfire")
 	end
 	if(BUTTONPUSHEDQ) then
 		BUTTONPUSHEDQ=false
@@ -146,7 +149,7 @@ end
 function onForegroundWindowChange(app, title)---------------NEEDS TO CHANGE
 	--myo.debug("onForegroundWindowChange: " .. app .. ", " .. title)
 	--myo.setLockingPolicy("none")
-	local truth = platform == "Windows" and app == "left4dead.exe"
+	local truth = platform == "Windows" and app == "sublime_text.exe"
 	if(truth) then
 		center()
 	end
@@ -167,26 +170,28 @@ function onLock()
 	--do something when the myp is locked (time runs out)
 end
 
-function onPeriodic()   
-    local currentPitch = myo.getPitch()
-    local deltaPitch = calcDeltaPitch(currentPitch, centerPitch)
-    
-    if (deltaPitch < -PITCHSPACE) then
-        switchWeapons()
-    elseif (deltaPitch > PITCHSPACE) then
-    	--myo.debug("aimdown")
-        aimDownSights()
-    else
-        hipFire()
-	end
-
-    local x,y,z = myo.getGyro()
-
-    if (x>MELEEMINSPEED or y>MELEEMINSPEED) then
-    	--myo.debug("melee" .. ", " .. y .. ", " .. z)
+function onPeriodic()  
+	local x,y,z = myo.getGyro()
+	if (z>MELEEMINSPEED or z< -MELEEMINSPEED) then
+    	myo.debug("melee" .. ", " .. y .. ", " .. z)
     	melee()
+    	MELEETRUE=true
     else 
     	meleeReset()
+    end
+
+    if (not MELEETRUE) then
+    	local currentPitch = myo.getPitch()
+    	local deltaPitch = calcDeltaPitch(currentPitch, centerPitch)
+    
+    	if (deltaPitch < -PITCHSPACE) then
+    	    switchWeapons()
+    	elseif (deltaPitch > PITCHSPACE) then
+    		--myo.debug("aimdown")
+    	    aimDownSights()
+    	else
+        	hipFire()
+		end
     end
 end
  
