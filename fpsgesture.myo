@@ -3,7 +3,7 @@ scriptTitle = "FPS Gesture"
 scriptDetailsUrl = ""
 
 centerPitch = 0
-PITCHSPACE = 1.6
+PITCHSPACE = .8
 BUTTONPUSHED = false
 BUTTONRIGHT = false
 
@@ -68,35 +68,42 @@ end
 
 function center()
 	centerPitch = myo.getPitch()
+	myo.debug("Centred")
 end
 
 function calcDeltaPitch(currentPitch, centerPitch)
     local deltaPitch = currentPitch - centerPitch
     
-    if (deltaYaw > 3.14) then
+    if (deltaPitch > 3.14) then
         deltaPitch = deltaPitch- 6.28
-    elseif(deltaYaw < -3.14) then
+    elseif(deltaPitch < -3.14) then
         deltaPitch = deltaPitch + 6.28
     end
     return deltaPitch
 end
 
 function switchWeapons()
-	myo.keyboard("q", "down")
+	if(not BUTTONPUSHEDQ) then
+		myo.keyboard("q", "down")
+		myo.keyboard("q", "up")
+	end
 	BUTTONPUSHEDQ = true
 end
 
 function aimDownSights()
 	myo.mouse("right", "down")
+	myo.mouse("right", "up")
 	BUTTONRIGHT = true;
 end
 
 function hipFire()
 	if(BUTTONRIGHT) then
+		myo.mouse("right", "down")
 		myo.mouse("right", "up")
+		BUTTONRIGHT=false
 	end
 	if(BUTTONPUSHEDQ) then
-		myo.keyboard("q", "true")
+		BUTTONPUSHEDQ=false
 	end
 end
 
@@ -107,9 +114,10 @@ function activeAppName()
 end
 
 function onForegroundWindowChange(app, title)---------------NEEDS TO CHANGE
-	--myo.debug("onForegroundWindowChange: " .. app .. ", " .. title)
+	myo.debug("onForegroundWindowChange: " .. app .. ", " .. title)
 	--myo.setLockingPolicy("none")
-	return platform == "Windows" and app == "left4dead2.exe"
+	center()
+	return platform == "Windows" and app == "sublime_text.exe"
 end
 
 function onActiveChange(isActive)
@@ -127,20 +135,15 @@ function onLock()
 end
 
 function onPeriodic()   
-	if(BUTTONPUSHEDQ) then
-		BUTTONPUSHEDQ=false
-		myo.keyboard("q", "up")
-	end
-
     if (centerPitch == 0) then
         return
     end
     local currentPitch = myo.getPitch()
     local deltaPitch = calcDeltaPitch(currentPitch, centerPitch)
     
-    if (deltaPitch < -PITCH_SPACE) then
+    if (deltaPitch > PITCHSPACE) then
         switchWeapons()
-    elseif (deltaYaw > PITCH_SPACE) then
+    elseif (deltaPitch < -PITCHSPACE) then
         aimDownSights()
     else
         hipFire()
