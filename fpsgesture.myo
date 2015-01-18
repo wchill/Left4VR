@@ -3,8 +3,12 @@ scriptTitle = "FPS Gesture"
 scriptDetailsUrl = ""
 
 centerPitch = 0
-PITCHSPACE = .8
+centerYaw = 0
+PITCHSPACE = .4
+YAWSPACE = .7
+
 BUTTONPUSHED = false
+BUTTONMIDDLE = false
 BUTTONRIGHT = false
 
 function onPoseEdge(pose, edge)
@@ -91,20 +95,32 @@ function switchWeapons()
 end
 
 function aimDownSights()
-	myo.mouse("middle", "down")
-	myo.mouse("middle", "up")
-	BUTTONRIGHT = true;
+	myo.mouse("center", "down")
+	myo.mouse("center", "up")
+	BUTTONMIDDLE = true;
 end
 
 function hipFire()
-	if(BUTTONRIGHT) then
-		myo.mouse("middle", "down")
-		myo.mouse("middle", "up")
-		BUTTONRIGHT=false
+	if(BUTTONMIDDLE) then
+		myo.mouse("center", "down")
+		myo.mouse("center", "up")
+		BUTTONMIDDLE=false
 	end
 	if(BUTTONPUSHEDQ) then
 		BUTTONPUSHEDQ=false
 	end
+end
+
+function melee()
+	if(not BUTTONRIGHT) then
+		myo.mouse("right", "down")
+		myo.mouse("right", "up")
+	end
+	BUTTONRIGHT = true
+end
+
+function meleeReset()
+	BUTTONRIGHT=false
 end
 
 ----------Required Callback Functions-------------
@@ -140,13 +156,21 @@ function onPeriodic()
     end
     local currentPitch = myo.getPitch()
     local deltaPitch = calcDeltaPitch(currentPitch, centerPitch)
+    local currentYaw = myo.getYaw()
+    local deltaYaw = calcDeltaYaw(currentYaw, centerYaw)
     
-    if (deltaPitch > PITCHSPACE) then
+    if (deltaPitch < -PITCHSPACE) then
         switchWeapons()
-    elseif (deltaPitch < -PITCHSPACE) then
+    elseif (deltaPitch > PITCHSPACE) then
         aimDownSights()
     else
         hipFire()
+    end
+
+    if (deltaYaw < -YAWSPACE) then
+    	melee()
+    else 
+    	meleeReset()
     end
 end
  
