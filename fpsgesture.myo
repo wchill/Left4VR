@@ -6,7 +6,7 @@ centerPitch = 0
 centerYaw = 0
 PITCHSPACE = .4
 YAWSPACE = .5
-MELEEMINSPEED = 300
+MELEEMINSPEED = 400
 
 BUTTONPUSHED = false
 BUTTONMIDDLE = false
@@ -168,24 +168,21 @@ function onLock()
 end
 
 function onPeriodic()   
-    if (centerPitch == 0) then
-        return
-    end
     local currentPitch = myo.getPitch()
     local deltaPitch = calcDeltaPitch(currentPitch, centerPitch)
     
     if (deltaPitch < -PITCHSPACE) then
-        --switchWeapons()
+        switchWeapons()
     elseif (deltaPitch > PITCHSPACE) then
     	myo.debug("aimdown")
         aimDownSights()
     else
-        hipFire()5
-    end
+        hipFire()
+	end
 
     local x,y,z = myo.getGyro()
 
-    if (x>MELEEMINSPEED or y>MELEEMINSPEED or z>MELEEMINSPEED) then
+    if (x>MELEEMINSPEED or y>MELEEMINSPEED) then
     	myo.debug("melee" .. ", " .. y .. ", " .. z)
     	melee()
     else 
