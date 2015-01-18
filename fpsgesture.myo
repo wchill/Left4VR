@@ -5,7 +5,7 @@ scriptDetailsUrl = ""
 centerPitch = 0
 centerYaw = 0
 PITCHSPACE = .4
-YAWSPACE = .7
+YAWSPACE = .5
 
 BUTTONPUSHED = false
 BUTTONMIDDLE = false
@@ -106,9 +106,11 @@ function switchWeapons()
 end
 
 function aimDownSights()
-	myo.mouse("center", "down")
-	myo.mouse("center", "up")
-	BUTTONMIDDLE = true;
+	if(not BUTTONMIDDLE) then 
+		myo.mouse("center", "down")
+		myo.mouse("center", "up")
+		BUTTONMIDDLE = true;
+	end
 end
 
 function hipFire()
@@ -126,8 +128,8 @@ function melee()
 	if(not BUTTONRIGHT) then
 		myo.mouse("right", "down")
 		myo.mouse("right", "up")
+		BUTTONRIGHT = true
 	end
-	BUTTONRIGHT = true
 end
 
 function meleeReset()
@@ -143,8 +145,11 @@ end
 function onForegroundWindowChange(app, title)---------------NEEDS TO CHANGE
 	myo.debug("onForegroundWindowChange: " .. app .. ", " .. title)
 	--myo.setLockingPolicy("none")
-	center()
-	return platform == "Windows" and app == "sublime_text.exe"
+	local truth = platform == "Windows" and app == "left4dead2.exe"
+	if(truth) then
+		center()
+	end
+	return truth
 end
 
 function onActiveChange(isActive)
@@ -158,7 +163,7 @@ function onUnlock()
 end
 
 function onLock()
-	--do somethinge when the myp is locked (time runs out)
+	--do something when the myp is locked (time runs out)
 end
 
 function onPeriodic()   
@@ -167,18 +172,21 @@ function onPeriodic()
     end
     local currentPitch = myo.getPitch()
     local deltaPitch = calcDeltaPitch(currentPitch, centerPitch)
-    local currentYaw = myo.getYaw()
-    local deltaYaw = calcDeltaYaw(currentYaw, centerYaw)
     
     if (deltaPitch < -PITCHSPACE) then
-        switchWeapons()
+        --switchWeapons()
     elseif (deltaPitch > PITCHSPACE) then
+    	myo.debug("aimdown")
         aimDownSights()
     else
         hipFire()
     end
 
+    local currentYaw = myo.getYaw()
+    local deltaYaw = calcDeltaYaw(currentYaw, centerYaw)
+
     if (deltaYaw < -YAWSPACE) then
+    	myo.debug("melee")
     	melee()
     else 
     	meleeReset()
