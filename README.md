@@ -6,6 +6,13 @@ Immersive VR Friendly Controls for First Person Shooter Games
 this is a hackathon project for MHacks V
 http://mhacksv.challengepost.com/submissions/31657-left-4-virtual-reality
 ```
+##Collaborators
+| Name | GitHub |
+|:------------- |:-------------:|
+| Abhishek Modi | https://github.com/modi95 |
+| Andrew Kuznetsov | https://github.com/akuznets0v|
+| Eric Ahn | https://github.com/wchill |
+| Jimmy Guo| https://github.com/B1indfire|
 
 ##The Idea
 
