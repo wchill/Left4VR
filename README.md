@@ -1,6 +1,5 @@
 # Left 4 Virtual Reality
 Immersive VR Friendly Controls for First Person Shooter Games
-![Final Hackathon Product](http://s3.amazonaws.com/challengepost/photos/production/solution_photos/000/200/219/datas/xlarge.png?1421591141)
 
 ```
 this is a hackathon project for MHacks V
@@ -19,6 +18,8 @@ http://mhacksv.challengepost.com/submissions/31657-left-4-virtual-reality
 Most virtual reality experiences today are passive ones. We've all enjoyed Rift Coaster and the like, and these are promising first steps. But the promise of VR is *reality*… immersion. 
 
 Or project is another step in the direction of immersion. We largely have two components to our product - a glove and a nerf gun. Both of these components are fitted with enough sensors to let you forget that you're using a controller and let you focus instead on surviving in the zombie infested world of Left 4 Dead 2.
+
+![Final Hackathon Product](http://s3.amazonaws.com/challengepost/photos/production/solution_photos/000/200/219/datas/xlarge.png?1421591141)
 
 This project is built with a special focus on Left 4 Dead 2 as we understand that a good virtual reality experience requires accuracy and finesse just as much as it requires general functionality. In this regard, while our project will work with most first person shooter games, we have intentionally built it to be great for Left 4 Dead 2.
 
