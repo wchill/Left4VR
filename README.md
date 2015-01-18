@@ -27,11 +27,14 @@ This project is built with a special focus on Left 4 Dead 2 as we understand tha
 ##Design
 ###The Armed Controller
 The dominant controller for the project is the Armed Controller. It looks like a gun and use for this controller is clear enough: aiming down sights, firing, reloading, etc. It started off as an ordinary Nerf Rapidstrike, which we then gutted to make space for sensors and sensor feeds. We chose this model of the Nerf for its form factor (which is similar to most guns in fps games), its versatility (the collapsible stock, design and multiple tactical rails) and for its electrically controlled trigger system (most moving parts were electrically driven, not mechanically). All the preexisting sensors from the Rapidstrike feed into a Raspberry Pi which is mounted on the side of the gun. 
+
 We’ve also removed the contents of what used to be battery compartment of the Rapidstrike and fitted a Nintendo Wii Remote and Nunchuk controller there. This controller is used to get information about the Armed Controller’s movements and to control movement within the game (walking, sprinting, control of an under-barrel attachment such as a flashlight, etc).
+
 Power is supplied to the Armed Controller by the mounted Raspberry Pi, which in turn can be powered via Micro USB. We could therefore power this part of the project using a battery pack/wall adapter/similar. The Raspberry Pi is currently connected to our gaming computer using an Ethernet cable in the interest of maintaining low latency. We have support for Bluetooth as well, although the response times aren’t desirable (in the order of tens of milliseconds depending on the environment) and in an application like VR where fast response times are crucial, we found this to be an unacceptable compromise for our needs.
 
 ###The Unarmed Controller
 Another major component of the build is the Unarmed Controller worn on the unarmed hand. It basically consists of a custom built glove controller and a Myo armband. This controller is to be used to perform most other gestures in the game. This includes (but not limited to) picking up items, using throwables, signaling fellow players, and interacting with fellow players and the environment.
+
 There are two flex sensors and one pressure sensor in the glove that we use to read the state of the hand. These sensors are sampled at 100Hz and feed into an Arduino Pro Micro, which feeds data via UART to the Raspberry Pi on the side of the Armed Controller. The Myo feeds data directly to the gaming PC via Bluetooth.
 
 ###The Oculus
