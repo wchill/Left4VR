@@ -91,15 +91,15 @@ function switchWeapons()
 end
 
 function aimDownSights()
-	myo.mouse("right", "down")
-	myo.mouse("right", "up")
+	myo.mouse("middle", "down")
+	myo.mouse("middle", "up")
 	BUTTONRIGHT = true;
 end
 
 function hipFire()
 	if(BUTTONRIGHT) then
-		myo.mouse("right", "down")
-		myo.mouse("right", "up")
+		myo.mouse("middle", "down")
+		myo.mouse("middle", "up")
 		BUTTONRIGHT=false
 	end
 	if(BUTTONPUSHEDQ) then
@@ -117,7 +117,7 @@ function onForegroundWindowChange(app, title)---------------NEEDS TO CHANGE
 	myo.debug("onForegroundWindowChange: " .. app .. ", " .. title)
 	--myo.setLockingPolicy("none")
 	center()
-	return platform == "Windows" and app == "sublime_text.exe"
+	return platform == "Windows" and app == "left4dead2.exe"
 end
 
 function onActiveChange(isActive)
