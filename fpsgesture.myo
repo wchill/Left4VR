@@ -1,0 +1,89 @@
+scriptId = 'com.mhacksv.fpsgesture'
+scriptTitle = "FPS Gesture"
+scriptDetailsUrl = ""
+
+
+
+function onPoseEdge(pose, edge)
+	--myo.debug("onPoseEdge: " .. pose .. ": " .. edge)
+	pose = swapWave(pose)
+	if(edge == "on") then
+		if (pose == "waveOut") then
+			onWaveOut()	
+		elseif (pose == "waveIn") then
+			onWaveIn()
+		elseif (pose == "fist") then
+			onFist()
+		elseif (pose == "fingersSpread") then
+			onFingersSpread()	
+		end
+	end
+end
+
+function onWaveOut()
+	--myo.debug("Switch down")
+	myo.keyboard("e", "press")
+end
+
+function onWaveIn()
+	--myo.debug("Switch up")
+	myo.keyboard("q", "press")
+end
+
+function onFist()
+	--myo.debug("Pills")
+	myo.keyboard("4", "press")
+end
+
+function onFingersSpread()
+	--myo.debug("Throwable")
+	myo.keyboard("5", "press")
+end
+
+function swapWave(pose) -- inverts wave if on left arm
+	if myo.getArm() == "left" then
+		if pose == "waveIn" then
+			pose = "waveOut"
+		elseif pose == "waveOut" then
+			pose = "waveIn"
+		end
+	end
+	return pose
+end
+
+function getMyoRollDegrees() --along the arm, pos= cw from user perspective
+    return math.deg(myo.getRoll())
+end
+
+function getMyoPitchDegrees() --up down, pos = up movement
+    return math.deg(myo.getPitch())
+end
+
+function getMyoYawDegrees() -- left right, pos = to the right
+    return math.deg(myo.getYaw())
+end
+
+----------Required Callback Functions-------------
+
+function activeAppName()
+	return "FPS Game"
+end
+
+function onForegroundWindowChange(app, title)---------------NEEDS TO CHANGE
+	--myo.debug("onForegroundWindowChange: " .. app .. ", " .. title)
+	return platform == "Windows" and app == "sublime_text.exe"
+end
+
+function onActiveChange(isActive)
+	if (isActive) then
+		--do something if the script is activated
+	end
+end
+
+function onUnlock()
+	--do something when the myo is unlocked (double tap)
+end
+
+function onLock()
+	--do something when the myp is locked (time runs out)
+end
