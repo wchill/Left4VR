@@ -2,7 +2,10 @@ scriptId = 'com.mhacksv.fpsgesture'
 scriptTitle = "FPS Gesture"
 scriptDetailsUrl = ""
 
-
+centerPitch = 0
+PITCHSPACE = 1.6
+BUTTONPUSHED = false
+BUTTONRIGHT = false
 
 function onPoseEdge(pose, edge)
 	--myo.debug("onPoseEdge: " .. pose .. ": " .. edge)
@@ -63,6 +66,40 @@ function getMyoYawDegrees() -- left right, pos = to the right
     return math.deg(myo.getYaw())
 end
 
+function center()
+	centerPitch = myo.getPitch()
+end
+
+function calcDeltaPitch(currentPitch, centerPitch)
+    local deltaPitch = currentPitch - centerPitch
+    
+    if (deltaYaw > 3.14) then
+        deltaPitch = deltaPitch- 6.28
+    elseif(deltaYaw < -3.14) then
+        deltaPitch = deltaPitch + 6.28
+    end
+    return deltaPitch
+end
+
+function switchWeapons()
+	myo.keyboard("q", "down")
+	BUTTONPUSHEDQ = true
+end
+
+function aimDownSights()
+	myo.mouse("right", "down")
+	BUTTONRIGHT = true;
+end
+
+function hipFire()
+	if(BUTTONRIGHT) then
+		myo.mouse("right", "up")
+	end
+	if(BUTTONPUSHEDQ) then
+		myo.keyboard("q", "true")
+	end
+end
+
 ----------Required Callback Functions-------------
 
 function activeAppName()
@@ -71,7 +108,8 @@ end
 
 function onForegroundWindowChange(app, title)---------------NEEDS TO CHANGE
 	--myo.debug("onForegroundWindowChange: " .. app .. ", " .. title)
-	return platform == "Windows" and app == "sublime_text.exe"
+	--myo.setLockingPolicy("none")
+	return platform == "Windows" and app == "left4dead2.exe"
 end
 
 function onActiveChange(isActive)
@@ -85,5 +123,27 @@ function onUnlock()
 end
 
 function onLock()
-	--do something when the myp is locked (time runs out)
+	--do somethinge when the myp is locked (time runs out)
 end
+
+function onPeriodic()   
+	if(BUTTONPUSHEDQ) then
+		BUTTONPUSHEDQ=false
+		myo.keyboard("q", "up")
+	end
+
+    if (centerPitch == 0) then
+        return
+    end
+    local currentPitch = myo.getPitch()
+    local deltaPitch = calcDeltaPitch(currentPitch, centerPitch)
+    
+    if (deltaPitch < -PITCH_SPACE) then
+        switchWeapons()
+    elseif (deltaYaw > PITCH_SPACE) then
+        aimDownSights()
+    else
+        hipFire()
+    end
+end
+ 
