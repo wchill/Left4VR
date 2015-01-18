@@ -6,6 +6,7 @@ centerPitch = 0
 centerYaw = 0
 PITCHSPACE = .4
 YAWSPACE = .5
+MELEEMINSPEED = 300
 
 BUTTONPUSHED = false
 BUTTONMIDDLE = false
@@ -179,14 +180,13 @@ function onPeriodic()
     	myo.debug("aimdown")
         aimDownSights()
     else
-        hipFire()
+        hipFire()5
     end
 
-    local currentYaw = myo.getYaw()
-    local deltaYaw = calcDeltaYaw(currentYaw, centerYaw)
+    local x,y,z = myo.getGyro()
 
-    if (deltaYaw < -YAWSPACE) then
-    	myo.debug("melee")
+    if (x>MELEEMINSPEED or y>MELEEMINSPEED or z>MELEEMINSPEED) then
+    	myo.debug("melee" .. ", " .. y .. ", " .. z)
     	melee()
     else 
     	meleeReset()
