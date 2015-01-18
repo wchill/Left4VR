@@ -73,7 +73,7 @@ end
 
 function center()
 	centerPitch = myo.getPitch()
-	myo.debug("Centred")
+	--myo.debug("Centred")
 end
 
 function calcDeltaPitch(currentPitch, centerPitch)
@@ -144,9 +144,9 @@ function activeAppName()
 end
 
 function onForegroundWindowChange(app, title)---------------NEEDS TO CHANGE
-	myo.debug("onForegroundWindowChange: " .. app .. ", " .. title)
+	--myo.debug("onForegroundWindowChange: " .. app .. ", " .. title)
 	--myo.setLockingPolicy("none")
-	local truth = platform == "Windows" and app == "left4dead2.exe"
+	local truth = platform == "Windows" and app == "left4dead.exe"
 	if(truth) then
 		center()
 	end
@@ -174,7 +174,7 @@ function onPeriodic()
     if (deltaPitch < -PITCHSPACE) then
         switchWeapons()
     elseif (deltaPitch > PITCHSPACE) then
-    	myo.debug("aimdown")
+    	--myo.debug("aimdown")
         aimDownSights()
     else
         hipFire()
@@ -183,7 +183,7 @@ function onPeriodic()
     local x,y,z = myo.getGyro()
 
     if (x>MELEEMINSPEED or y>MELEEMINSPEED) then
-    	myo.debug("melee" .. ", " .. y .. ", " .. z)
+    	--myo.debug("melee" .. ", " .. y .. ", " .. z)
     	melee()
     else 
     	meleeReset()
