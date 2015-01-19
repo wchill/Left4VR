@@ -13,6 +13,8 @@ http://mhacksv.challengepost.com/submissions/31657-left-4-virtual-reality
 | Eric Ahn | https://github.com/wchill |
 | Jimmy Guo| https://github.com/B1indfire|
 
+![Our team](https://raw.githubusercontent.com/wchill/MHacks_Left4VR2/master/pics/Mhacks%20V%20Team.jpg)
+
 ##The Idea
 
 Most virtual reality experiences today are passive ones. We've all enjoyed Rift Coaster and the like, and these are promising first steps. But the promise of VR is *reality*… immersion. 
