@@ -9,7 +9,7 @@ http://mhacksv.challengepost.com/submissions/31657-left-4-virtual-reality
 | Name | GitHub | Personal |
 |:------------- |:-------------:|:-----:|
 | Abhishek Modi | https://github.com/modi95 |http://www.akmodi.com/|
-| Andrew Kuznetsov | https://github.com/akuznets0v||
+| Andrew Kuznetsov | https://github.com/akuznets0v|http://www.andrewkuz.net/sov|
 | Eric Ahn | https://github.com/wchill |http://intense.io/|
 | Jimmy Guo| https://github.com/B1indfire||
 
