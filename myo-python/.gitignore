@@ -1,0 +1,20 @@
+*.py[cod]
+myo/dist/
+
+# Shared libraries
+*.dll
+*.so
+*.so64
+*.dylib
+*.dylib64
+
+# Executables/Apps (eg. from the Myo SDK)
+*.exe
+*.app
+.project
+.pydevproject
+
+sdk
+myo.framework
+examples
+.idea
