@@ -3,11 +3,13 @@ __author__ = 'Eric Ahn'
 from twisted.internet.protocol import Factory
 from twisted.protocols.basic import LineReceiver
 from twisted.internet import reactor
+from Event import Event
 import ctypes
 import SendKeys
 from win32gui import GetWindowText, GetForegroundWindow
 SendInput = ctypes.windll.user32.SendInput
 
+# TODO: find where I got this code from
 # C struct redefinitions
 PUL = ctypes.POINTER(ctypes.c_ulong)
 class KeyBdInput(ctypes.Structure):
@@ -45,17 +47,18 @@ def PressKey(hexKeyCode):
     extra = ctypes.c_ulong(0)
     ii_ = Input_I()
     ii_.ki = KeyBdInput( 0, hexKeyCode, 0x0008, 0, ctypes.pointer(extra) )
-    x = Input( ctypes.c_ulong(1), ii_ )
+    x = Input(ctypes.c_ulong(1), ii_)
     ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
 
 def ReleaseKey(hexKeyCode):
     extra = ctypes.c_ulong(0)
     ii_ = Input_I()
     ii_.ki = KeyBdInput( 0, hexKeyCode, 0x0008 | 0x0002, 0, ctypes.pointer(extra) )
-    x = Input( ctypes.c_ulong(1), ii_ )
+    x = Input(ctypes.c_ulong(1), ii_)
     ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
 
 user32 = ctypes.windll.user32
+
 
 class SocketServer(LineReceiver):
 
@@ -66,6 +69,20 @@ class SocketServer(LineReceiver):
         self.events = {}
 
     def lineReceived(self, data):
+
+        """
+        print repr(data)
+        if data.startswith('Register'):
+            event = data.split(' ')
+            if event[1] == 'K':
+                self.events[event[2]] = Event(Event.EVENT_KEYBOARD, [event[3]])
+            elif event[1] == 'KT':
+                self.events[event[2]] = Event[Event.EVENT_KEYBOARD_TOGGLE, [event[3]]]
+            elif event[1] == 'M':
+                self.events[event[2]] = Event(Event.EVENT_MOUSE, event[3:8])
+            else:
+                self.events[event[2]] = Event(Event.EVENT_OTHER, event[3:])
+        """
 
         if GetWindowText(GetForegroundWindow()) == 'Left 4 Dead 2':
 
