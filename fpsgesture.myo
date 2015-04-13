@@ -14,7 +14,7 @@ BUTTONRIGHT = false
 MELEETRUE = false
 
 function onPoseEdge(pose, edge)
-	--myo.debug("onPoseEdge: " .. pose .. ": " .. edge)
+	myo.debug("onPoseEdge: " .. pose .. ": " .. edge)
 	pose = swapWave(pose)
 	if(edge == "on") then
 		if (pose == "waveOut") then
@@ -30,22 +30,22 @@ function onPoseEdge(pose, edge)
 end
 
 function onWaveOut()
-	--myo.debug("Switch down")
+	myo.debug("Switch down")
 	myo.keyboard("e", "press")
 end
 
 function onWaveIn()
-	--myo.debug("Switch up")
+	myo.debug("Switch up")
 	myo.keyboard("q", "press")
 end
 
 function onFist()
-	--myo.debug("Pills")
+	myo.debug("Pills")
 	myo.keyboard("4", "press")
 end
 
 function onFingersSpread()
-	--myo.debug("Throwable")
+	myo.debug("Throwable")
 	myo.keyboard("5", "press")
 end
 
@@ -74,7 +74,7 @@ end
 
 function center()
 	centerPitch = myo.getPitch()
-	--myo.debug("Centred")
+	myo.debug("Centred")
 end
 
 function calcDeltaPitch(currentPitch, centerPitch)
@@ -147,9 +147,9 @@ function activeAppName()
 end
 
 function onForegroundWindowChange(app, title)---------------NEEDS TO CHANGE
-	--myo.debug("onForegroundWindowChange: " .. app .. ", " .. title)
+	myo.debug("onForegroundWindowChange: " .. app .. ", " .. title)
 	--myo.setLockingPolicy("none")
-	local truth = platform == "Windows" and app == "sublime_text.exe"
+	local truth = platform == "Windows" and app == "left4dead2.exe"
 	if(truth) then
 		center()
 	end
@@ -187,8 +187,8 @@ function onPeriodic()
     	if (deltaPitch < -PITCHSPACE) then
     	    switchWeapons()
     	elseif (deltaPitch > PITCHSPACE) then
-    		--myo.debug("aimdown")
-    	    aimDownSights()
+    		myo.debug("aimdown")
+    	    ---aimDownSights()
     	else
         	hipFire()
 		end

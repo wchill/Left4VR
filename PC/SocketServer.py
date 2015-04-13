@@ -5,7 +5,7 @@ from twisted.protocols.basic import LineReceiver
 from twisted.internet import reactor
 import ctypes
 import SendKeys
-
+from win32gui import GetWindowText, GetForegroundWindow
 SendInput = ctypes.windll.user32.SendInput
 
 # C struct redefinitions
@@ -60,54 +60,75 @@ user32 = ctypes.windll.user32
 class SocketServer(LineReceiver):
 
     def __init__(self):
-        self.shoot_event = False
         self.reload_event = False
-        self.crouch_event = False
-        self.use_event = False
+        self.use1 = False
+        self.use2 = False
+        self.events = {}
 
     def lineReceived(self, data):
-        # print repr(data)
-        event = data.split(' ')
 
-        if int(event[0], 16) < 48 and int(event[1], 16) < 48:
-            PressKey(0x12)
-            self.use_event = True
-        elif self.use_event:
-            self.use_event = False
-            ReleaseKey(0x12)
+        if GetWindowText(GetForegroundWindow()) == 'Left 4 Dead 2':
 
-        if event[3] == '1':
-            PressKey(0x1D)
-            self.crouch_event = True
-        elif self.crouch_event:
-            self.crouch_event = False
-            ReleaseKey(0x1D)
+            # switch weapons
+            if data[0] == 'C':
+                if data[1] == '1':
+                    user32.mouse_event(0x0800, 0, 0, -120, 0)
 
-        if event[4] == '1':
-            user32.mouse_event(0x0002, 0, 0, 0, 0) # press left
-            self.shoot_event = True
-        elif self.shoot_event:
-            self.shoot_event = False
-            user32.mouse_event(0x0004, 0, 0, 0, 0) # release left
+            # shoot
+            elif data[0] == 'S':
+                if data[1] == '1':
+                    user32.mouse_event(0x0002, 0, 0, 0, 0) # press left
+                else:
+                    user32.mouse_event(0x0004, 0, 0, 0, 0) # release left
 
-        if event[5] == '1' and self.reload_event == False:
-            SendKeys.SendKeys('R')
-            self.reload_event = True
-        elif event[5] == '0':
-            self.reload_event = False
+            # reload
+            elif data[0] == 'R':
+                if data[1] == '1' and self.reload_event == False:
+                    SendKeys.SendKeys('R')
+                    self.reload_event = True
+                elif data[1] == '0':
+                    self.reload_event = False
+
+            # press key
+            elif data[0] == 'K':
+                if data[1] == '+':
+                    PressKey(ord(data[2]))
+                elif data[1] == '-':
+                    ReleaseKey(ord(data[2]))
+
+            # melee shove
+            elif data[0] == 'M':
+                if data[1] == '1':
+                    user32.mouse_event(0x0008, 0, 0, 0, 0) # press right
+                else:
+                    user32.mouse_event(0x0010, 0, 0, 0, 0) # release right
+
+            # glove event
+            elif data[0] == 'G':
+                if data[1] == '1':
+                    self.use1 = not not int(data[2])
+                else:
+                    self.use2 = not not int(data[2])
+                if self.use1 and self.use2:
+                    PressKey(0x12)
+                else:
+                    ReleaseKey(0x12)
 
     def connectionMade(self):
-        print 'RPi connected'
+        peer = self.transport.getPeer()
+        print 'Client {0}:{1} connected'.format(peer.host, peer.port)
         self.transport.write('lol\r\n')
 
     def connectionLost(self, reason):
-        print 'RPi disconnected'
+        peer = self.transport.getPeer()
+        print 'Client {0}:{1} disconnected'.format(peer.host, peer.port)
         user32.mouse_event(0x0004, 0, 0, 0, 0)
-        self.shoot_event = False
+        user32.mouse_event(0x0010, 0, 0, 0, 0)
+        #self.shoot_event = False
         ReleaseKey(0x1D)
-        self.crouch_event = False
+        #self.crouch_event = False
         ReleaseKey(0x12)
-        self.use_event = False
+        #self.use_event = False
 
 class SocketServerFactory(Factory):
 
