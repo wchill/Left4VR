@@ -14,6 +14,7 @@ Immersive VR Friendly Controls for First Person Shooter Games
 | Jimmy Guo| https://github.com/B1indfire||
 
 ![Our team](https://raw.githubusercontent.com/wchill/Left4VR/master/pics/Mhacks%20V%20Team.jpg)
+![EOH Team](https://github.com/wchill/Left4VR/blob/master/pics/D7K_5535_Edit.JPG?raw=true)
 
 ##The Idea
 
