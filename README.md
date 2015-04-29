@@ -1,9 +1,13 @@
 # Left 4 Virtual Reality
 Immersive VR Friendly Controls for First Person Shooter Games
 
-(This was a hackathon project for MHacks V)[http://mhacksv.challengepost.com/submissions/31657-left-4-virtual-reality\]
+###At MHacks V
+http://mhacksv.challengepost.com/submissions/31657-left-4-virtual-reality
+https://www.youtube.com/watch?v=oh_zPe3Ard0
 
-(Presented at EOH 2015)[https://www.youtube.com/watch?v=bhYxKahUGq4]
+###At EOH 2015 
+https://www.youtube.com/watch?v=bhYxKahUGq4
+
 
 ##Collaborators
 | Name | GitHub | Personal |
