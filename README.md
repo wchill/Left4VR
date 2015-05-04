@@ -9,6 +9,8 @@ https://www.youtube.com/watch?v=oh_zPe3Ard0
 ###At EOH 2015 
 https://www.youtube.com/watch?v=bhYxKahUGq4
 
+###Coming to HackIllinois 2016
+
 
 ##Collaborators
 | Name | GitHub | Personal |
